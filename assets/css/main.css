@@ -1,0 +1,13 @@
+hr {
+  height: 7px;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    box-shadow: 0 0 3px 0;
+}
+
+i {
+  font-size: 25px;
+}
