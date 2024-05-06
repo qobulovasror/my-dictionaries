@@ -21,7 +21,7 @@
                 </a>
                 <?php } else{ ?>
                     <div class="d-flex">
-                        <a href="/templates/docList.php" class="btn btn-primary me-2"  style="height: 40px">Yangi lug'at turini yaratish</a>
+                        <a href="/templates/createTable.php" class="btn btn-primary me-2"  style="height: 40px">Yangi lug'at turini yaratish</a>
                         <a href="/?logout=1" class="btn btn-danger"  style="height: 40px">Chiqish</a>
                     </div>
                 <?php } ?>

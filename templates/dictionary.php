@@ -23,7 +23,8 @@ function getDict($link, $tableName)
 {
     $query = "SELECT * FROM `$tableName`";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
-    for ($data = []; $row = mysqli_fetch_assoc($result); $data[] = $row);
+    for ($data = []; $row = mysqli_fetch_assoc($result); $data[] = $row)
+        ;
     return $data;
 }
 function getCoulums($link, $tableName)
@@ -32,7 +33,8 @@ function getCoulums($link, $tableName)
     FROM INFORMATION_SCHEMA.COLUMNS
     WHERE table_name = '$tableName'";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
-    for ($data = []; $row = mysqli_fetch_assoc($result)["column_name"]; $data[] = $row);
+    for ($data = []; $row = mysqli_fetch_assoc($result)["column_name"]; $data[] = $row)
+        ;
     return $data;
 }
 
@@ -53,63 +55,69 @@ $pageTitle = "Lug'atlar";
 <?php require ('../components/header.php'); ?>
 
 <body>
-
-    <?php require ('../components/navbar.php'); ?>
-    <div class="container">
-        <div class="row mt-4 justify-content-between">
-            <div class="col-8">
-                <h3 class="text-center">Lug'atlar ro'yxati</h3>
-                <div class="card p-3">
-                    <table class="table table-striped table-hover" style="width:100%; overflow: auto;">
-                        <thead>
-                            <tr>
-                                <?php
-                                    $tableHeader = "";
-                                    $tableHeader .= '<th scope="col">#</th>';
-                                    foreach($columnNames as $col){
-                                        $tableHeader .= '<th scope="col">'.$col.'</th>';
-                                    }
-                                    echo $tableHeader;
-                                ?>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                                //show table items
-                                $tableCell = "";
-                                foreach($curTable as $key => $value) {
-                                    $tableCell .= "<tr>";
-                                    $tableCell .= '<th scope="row">'.($key+1).'</th>';
-                                    foreach($columnNames as $i){
-                                        $tableCell .= '<td>'.$value[$i].'</td>';
-                                    }
-                                    $tableCell .= "</tr>";
-                                }
-                                echo $tableCell;
-                            ?>
-                        </tbody>
-                    </table>
+    <div class="modal" tabindex="-1" id="addModalWin" style="background: #000000a6;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Yangi ma'lumot qo'shish</h5>
+                    <button type="button" class="btn-close" id="closeAddModalBtn"></button>
                 </div>
-            </div>
-            <div class="col-4">
-                <h3 class="text-cemter">Yangi ma'lumot qo'shish</h3>
-                <div class="card p-4">
+                <div class="modal-body">
                     <form method="post" action="/templates/dictionary.php">
                         <?php
-                            $inputFielts = "";
-                            foreach($columnNames as $name){
-                                $inputFielts .= '<div class="mb-3">';
-                                $inputFielts .= '<label for="'.$name.'For" class="form-label">'.$name.'</label>';
-                                $inputFielts .= '<input type="text" name="'.$name.'" class="form-control" id="'.$name.'For">';
-                                $inputFielts .= '</div>';
-                            }
-                            echo $inputFielts;
+                        $inputFielts = "";
+                        foreach ($columnNames as $name) {
+                            $inputFielts .= '<div class="mb-3">';
+                            $inputFielts .= '<label for="' . $name . 'For" class="form-label">' . $name . '</label>';
+                            $inputFielts .= '<input type="text" name="' . $name . '" class="form-control" id="' . $name . 'For">';
+                            $inputFielts .= '</div>';
+                        }
+                        echo $inputFielts;
                         ?>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
             </div>
         </div>
+    </div>
+    <?php require ('../components/navbar.php'); ?>
+    <div class="container">
+        <div class="d-flex justify-content-between m-3">
+            <h3 class="text-center">Lug'atlar ro'yxati</h3>
+            <button class="btn btn-primary" id="addModalBtn">Yangi ma'lumot qo'shish</button>
+        </div>
+        <div class="card p-3">
+            <table class="table table-striped table-hover" style="width:100%; overflow: auto;">
+                <thead>
+                    <tr>
+                        <?php
+                        $tableHeader = "";
+                        $tableHeader .= '<th scope="col">#</th>';
+                        foreach ($columnNames as $col) {
+                            $tableHeader .= '<th scope="col">' . $col . '</th>';
+                        }
+                        echo $tableHeader;
+                        ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    //show table items
+                    $tableCell = "";
+                    foreach ($curTable as $key => $value) {
+                        $tableCell .= "<tr>";
+                        $tableCell .= '<th scope="row">' . ($key + 1) . '</th>';
+                        foreach ($columnNames as $i) {
+                            $tableCell .= '<td>' . $value[$i] . '</td>';
+                        }
+                        $tableCell .= "</tr>";
+                    }
+                    echo $tableCell;
+                    ?>
+                </tbody>
+            </table>
+        </div>
+
     </div>
     <?php
     $list = "";
@@ -139,6 +147,18 @@ $pageTitle = "Lug'atlar";
     // echo $list;
     ?>
 
+        <script>
+            const addModal = document.getElementById("addModalWin");
+            const addModalBtn = document.getElementById("addModalBtn");
+            const closeAddModalBtn = document.getElementById("closeAddModalBtn");
+
+            addModalBtn.addEventListener("click", ()=>{
+                addModal.style.display = "block";
+            })
+            closeAddModalBtn.addEventListener("click", ()=>{
+                addModal.style.display = "none";
+            })
+        </script>
 
 </body>
 
